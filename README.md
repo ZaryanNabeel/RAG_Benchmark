@@ -5,6 +5,9 @@ assume the retriever works. This one measures the retriever against human releva
 three corpora, three arms (BM25, dense, RRF hybrid) — anchors two of them to published BEIR
 numbers, and significance-tests every comparison. Runs entirely on Ollama.
 
+<img width="3839" height="1812" alt="image" src="https://github.com/user-attachments/assets/4d674cd3-f40d-4015-8421-cc2676270d74" />
+
+
 ## What it found
 
 **1. "Use hybrid retrieval" is not a portable answer.** Same fusion rule, `RRF_K=60`, unchanged
@@ -97,10 +100,7 @@ ideal setup for fusion, and that is where hybrid posts its largest win.
 correctly declined 82% of the time. The remaining 18% is hallucination, measured with no LLM judge.
 
 Only 33 of 267 answerable questions got a confidently wrong answer — everything else scoring zero
-was the model declining while holding the evidence. Multi-hop questions need two articles combined,
-and an 8B model under a strict context-only instruction reads "I must synthesise this myself" as
-"the context doesn't contain it". So the next experiment is a **prompt change, not a retrieval
-change**, scored on both numbers at once since loosening refusal trades `null_query` EM away.
+was the model declining while holding the evidence.
 
 ## Why the numbers are trustworthy
 
@@ -138,14 +138,6 @@ documents and scores each arm — pick a labelled query from the sidebar to see 
 BM25 is the only fully offline arm; dense and hybrid need `ollama serve` even for retrieval, since
 the query itself must be embedded.
 
-`EMBED_MODEL` is an env override, so the whole evaluation re-runs on another embedder without
-touching code. On a Quadro T1000 (4 GB): `bge-m3` 1097 ms/doc (best, too slow), `nomic-embed-text`
-379 ms/doc (default), `all-minilm` 31 ms/doc — but it truncates at 256 tokens and silently drops
-half of every abstract.
-
-**Why a generated answer takes ~35 s:** not retrieval (1.5 ms of search + ~100 ms to embed), but
-prompt prefill. `qwen3:8b` needs 6.0 GB against a 4 GB card, so Ollama runs it 61% on CPU at
-~17 ms/token. Prefill is linear in `TOP_K`: 10 → 43.5 s, 5 → 19.9 s, 3 → 11.1 s.
 
 ## How it works
 
@@ -163,19 +155,3 @@ prompt prefill. `qwen3:8b` needs 6.0 GB against a 4 GB card, so Ollama runs it 6
 - **Scoring granularity** — the datasets label documents, not chunks, so chunk hits collapse to
   deduped documents (best rank wins) and all metrics are document-level.
 
-```
-src/config.py  constants   src/ingest.py    build both indexes   src/generate.py  context-only answering
-src/data.py    load+chunk  src/retrieve.py  3 arms, RRF, collapse src/evaluate.py  metrics + significance
-```
-
-## Not built (and when to add it)
-
-- **Cross-encoder reranking** — when `recall@20` is strong but `nDCG@10` is weak. MultiHopRAG is
-  exactly that shape now.
-- **Query rewriting / HyDE** — only if multi-hop recall stays poor after sweeping `RRF_K`.
-- **Synthetic QA generation / RAGAS faithfulness** — both need an LLM judge or LLM-written labels.
-  Every corpus here ships human labels, and the deterministic metrics cover the same ground.
-- **nomic task prefixes** — tested, not adopted. Re-embedding SciFact with `search_document:` /
-  `search_query:` moved nDCG@10 by +0.0005.
-- **Batching retrieval before generation** — tested, not adopted. 34.0 s/query against 34.8 s;
-  there was no model swap to avoid.
