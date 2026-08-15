@@ -1,0 +1,12 @@
+# Pinned exactly. The project's claim is that its numbers reproduce, and a
+# floor like `datasets>=2.19` does not reproduce anything -- the environment
+# these results were measured on resolved that floor to 5.0.1.
+# Python 3.12.6.
+datasets==5.0.1
+chromadb==1.5.9
+bm25s==0.3.10
+PyStemmer==3.1.0
+ollama==0.6.2
+ranx==0.3.21
+streamlit==1.61.1
+pytest==9.1.1

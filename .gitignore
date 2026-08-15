@@ -1,0 +1,25 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.log
+
+# Corpora, embeddings and both indexes -- gigabytes, and `src.ingest` rebuilds
+# them from the pinned dataset versions.
+data/
+
+# Local agent/editor settings, not project config.
+.claude/
+
+# Reports are the evidence behind the README tables, so the current ones ship:
+# they are ~1.4 KB each and let a reader check the numbers without a GPU.
+# Excluded: the sampled runs predate the equal-depth fix (config.EVAL_OVERFETCH),
+# so their `retrieval` blocks no longer match the README and would contradict it.
+# multihoprag_sample300_predictions.json is kept -- it holds the per-query
+# generation rows the generation table is computed from, and carries no
+# retrieval metrics to go stale.
+results/*
+!results/scifact_report.json
+!results/nfcorpus_report.json
+!results/multihoprag_report.json
+!results/multihoprag_sample300_predictions.json

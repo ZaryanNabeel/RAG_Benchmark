@@ -1,0 +1,58 @@
+{
+  "corpus": "nfcorpus",
+  "n_queries": 323,
+  "embed_model": "nomic-embed-text",
+  "gen_model": "qwen3:8b",
+  "chunk_chars": 1000,
+  "rrf_k": 60,
+  "retrieval": {
+    "dense": {
+      "ndcg@10": 0.3408689198083772,
+      "recall@10": 0.16896204399004483,
+      "recall@20": 0.2031115054295655,
+      "mrr@10": 0.5362904811047225,
+      "precision@1": 0.43962848297213625
+    },
+    "bm25": {
+      "ndcg@10": 0.3216424276385313,
+      "recall@10": 0.14730987180172272,
+      "recall@20": 0.17736089859010115,
+      "mrr@10": 0.5253292545088211,
+      "precision@1": 0.43962848297213625
+    },
+    "hybrid": {
+      "ndcg@10": 0.3511868312433545,
+      "recall@10": 0.16645420467187044,
+      "recall@20": 0.20277279159836634,
+      "mrr@10": 0.5654000196569856,
+      "precision@1": 0.48297213622291024
+    }
+  },
+  "n_labelled": 323,
+  "significance": {
+    "dense vs hybrid": {
+      "metric": "ndcg@10",
+      "p": 0.09,
+      "significant_at_0.05": false,
+      "wins": 89,
+      "ties": 124,
+      "losses": 110
+    },
+    "bm25 vs dense": {
+      "metric": "ndcg@10",
+      "p": 0.058,
+      "significant_at_0.05": false,
+      "wins": 95,
+      "ties": 107,
+      "losses": 121
+    },
+    "bm25 vs hybrid": {
+      "metric": "ndcg@10",
+      "p": 0.0,
+      "significant_at_0.05": true,
+      "wins": 66,
+      "ties": 133,
+      "losses": 124
+    }
+  }
+}

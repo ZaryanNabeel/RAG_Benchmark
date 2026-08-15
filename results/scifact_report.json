@@ -1,0 +1,58 @@
+{
+  "corpus": "scifact",
+  "n_queries": 300,
+  "embed_model": "nomic-embed-text",
+  "gen_model": "qwen3:8b",
+  "chunk_chars": 1000,
+  "rrf_k": 60,
+  "retrieval": {
+    "dense": {
+      "ndcg@10": 0.702372259287097,
+      "recall@10": 0.8454999999999999,
+      "recall@20": 0.8970000000000001,
+      "mrr@10": 0.6617380952380952,
+      "precision@1": 0.5766666666666667
+    },
+    "bm25": {
+      "ndcg@10": 0.6863002612489068,
+      "recall@10": 0.8186666666666667,
+      "recall@20": 0.8569444444444446,
+      "mrr@10": 0.6492288359788361,
+      "precision@1": 0.55
+    },
+    "hybrid": {
+      "ndcg@10": 0.7311429655692695,
+      "recall@10": 0.8566111111111112,
+      "recall@20": 0.9092222222222222,
+      "mrr@10": 0.6983306878306879,
+      "precision@1": 0.61
+    }
+  },
+  "n_labelled": 300,
+  "significance": {
+    "dense vs hybrid": {
+      "metric": "ndcg@10",
+      "p": 0.02,
+      "significant_at_0.05": true,
+      "wins": 39,
+      "ties": 192,
+      "losses": 69
+    },
+    "bm25 vs dense": {
+      "metric": "ndcg@10",
+      "p": 0.341,
+      "significant_at_0.05": false,
+      "wins": 57,
+      "ties": 170,
+      "losses": 73
+    },
+    "bm25 vs hybrid": {
+      "metric": "ndcg@10",
+      "p": 0.0,
+      "significant_at_0.05": true,
+      "wins": 25,
+      "ties": 203,
+      "losses": 72
+    }
+  }
+}
