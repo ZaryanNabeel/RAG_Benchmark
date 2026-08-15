@@ -1,4 +1,4 @@
-# Hybrid-Retrieval RAG Benchmark
+# Retrieval RAG Benchmark
 
 A local RAG pipeline whose point is the **evaluation**. Most RAG demos measure the generator and
 assume the retriever works. This one measures the retriever against human relevance judgments —
