@@ -136,7 +136,11 @@ re-attempted.
 
 ## Results
 
-Document-level retrieval, all three arms. Regenerate with the commands above.
+Document-level retrieval, all three arms. Regenerate with the commands above — or read the
+reports behind these tables directly, since `results/*_report.json` ships in the repo: scores,
+p-values and per-query win/tie/loss counts, checkable without a GPU. Dependencies are pinned
+exactly (`requirements.txt`, Python 3.12.6) because a reproducibility claim that cannot
+reproduce its own environment is not one.
 
 `nomic-embed-text` embeddings, `CHUNK_CHARS=1000`, `RRF_K=60`, `EVAL_OVERFETCH=6`, document-level
 scoring at `k=20`. Every arm is searched at the same candidate depth — see
